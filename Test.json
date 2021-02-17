@@ -1,0 +1,1 @@
+{"measurements":{"accuracy":0.0,"bandwidth":1197.3728442424476,"drop_rate":0.0,"latency":354.908,"step_data_size":4000000},"parameters":{"combining_steps":40,"reader_threading":true,"transport":"reliable","writer_threading":true}}
