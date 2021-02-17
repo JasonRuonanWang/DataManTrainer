@@ -9,12 +9,11 @@ int main(int argc, char *argv[])
 
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> variable_size_distrib(100, 10000000);
+    std::uniform_int_distribution<> variable_size_distrib(100, 2500000);
     std::uniform_int_distribution<> bool_distrib(0, 1000);
     std::uniform_int_distribution<> combining_steps_distrib(2, 100);
 
-    size_t variable_size = 10000000;
-//    size_t variable_size = variable_size_distrib(gen);
+    size_t variable_size = variable_size_distrib(gen);
 
     int transport_dist = bool_distrib(gen);
     std::string transport_method;

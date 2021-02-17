@@ -13,7 +13,7 @@ int main(int argc, char **argv)
     engineParams["IPAddress"] = "127.0.0.1";
     engineParams["Port"] = "50000";
     engineParams["Monitor"] = "true";
-    engineParams["Verbose"] = "0";
+    engineParams["MaxStepBufferSize"] = "1100000000";
 
     adios2::ADIOS adios;
     adios2::IO io = adios.DeclareIO("TestIO");
