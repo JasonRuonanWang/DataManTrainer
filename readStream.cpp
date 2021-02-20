@@ -15,6 +15,7 @@ int main(int argc, char **argv)
         engineParams["IPAddress"] = "127.0.0.1";
         engineParams["Port"] = std::to_string(10000+i);
         engineParams["Monitor"] = "true";
+        engineParams["Timeout"] = "10";
         engineParams["MaxStepBufferSize"] = "1100000000";
 
         adios2::ADIOS adios;
