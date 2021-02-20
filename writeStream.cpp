@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
         io.SetParameters(engineParams);
 
         auto varFloats = io.DefineVariable<float>("myfloats", shape, start, count);
-        if(compression_dist < 500)
+        if(compression_dist > 333 && compression_dist < 666)
         {
             adios2::Operator zfpOp = adios.DefineOperator("zfpCompressor", adios2::ops::LossyZFP);
             std::string accuracy_string = "0.";
@@ -100,6 +100,17 @@ int main(int argc, char *argv[])
             }
             accuracy_string += "1";
             varFloats.AddOperation(zfpOp, {{adios2::ops::zfp::key::accuracy, accuracy_string}});
+        }
+        else if(compression_dist > 666)
+        {
+            adios2::Operator szOp = adios.DefineOperator("szCompressor", adios2::ops::LossySZ);
+            std::string accuracy_string = "0.";
+            for(int i=0; i<compression_accuracy; ++i)
+            {
+                accuracy_string += "0";
+            }
+            accuracy_string += "1";
+            varFloats.AddOperation(szOp, {{adios2::ops::sz::key::accuracy, accuracy_string}});
         }
 
         adios2::Engine engine = io.Open("TrainingData", adios2::Mode::Write);
