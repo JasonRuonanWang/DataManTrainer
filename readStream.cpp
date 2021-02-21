@@ -8,7 +8,7 @@ int main(int argc, char **argv)
 
     for(int i=0; i<9999; ++i)
     {
-        std::vector<float> myFloats;
+        std::vector<double> myFloats;
         bool initialStep = true;
 
         adios2::Params engineParams;
@@ -32,14 +32,14 @@ int main(int argc, char **argv)
             {
                 break;
             }
-            auto varFloats = io.InquireVariable<float>("myfloats");
+            auto varFloats = io.InquireVariable<double>("myfloats");
             if(initialStep)
             {
                 auto shape = varFloats.Shape();
-                myFloats.resize(std::accumulate(shape.begin(), shape.end(), sizeof(float), std::multiplies<size_t>()));
+                myFloats.resize(std::accumulate(shape.begin(), shape.end(), 1, std::multiplies<size_t>()));
                 initialStep = false;
             }
-            engine.Get<float>(varFloats, myFloats.data());
+            engine.Get<double>(varFloats, myFloats.data());
             engine.EndStep();
         }
         engine.Close();
