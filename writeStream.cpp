@@ -73,6 +73,7 @@ int main(int argc, char *argv[])
         engineParams["Monitor"] = "true";
         engineParams["TransportMode"] = transport_method;
         engineParams["Threading"] = threading;
+        engineParams["Verbose"] = "0";
         engineParams["FloatAccuracy"] = accuracy_string;
         if(combining_steps > 50)
         {

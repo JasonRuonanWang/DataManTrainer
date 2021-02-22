@@ -15,8 +15,14 @@ int main(int argc, char **argv)
         engineParams["IPAddress"] = "127.0.0.1";
         engineParams["Port"] = std::to_string(10000+i);
         engineParams["Monitor"] = "true";
-        engineParams["Timeout"] = "10";
+        engineParams["Timeout"] = "15";
+        engineParams["Verbose"] = "0";
         engineParams["MaxStepBufferSize"] = "1100000000";
+
+        for(const auto &i : engineParams)
+        {
+            std::cout << i.first << ": " << i.second << std::endl;
+        }
 
         adios2::ADIOS adios;
         adios2::IO io = adios.DeclareIO("TestIO");
