@@ -101,6 +101,7 @@ int main(int argc, char *argv[])
             }
             accuracy_string += "1";
             varFloats.AddOperation(zfpOp, {{adios2::ops::zfp::key::accuracy, accuracy_string}});
+            std::cout << "compression: zfp " << accuracy_string << std::endl;
         }
         else if(compression_dist >= 500 && compression_dist < 750)
         {
@@ -112,6 +113,7 @@ int main(int argc, char *argv[])
             }
             accuracy_string += "1";
             varFloats.AddOperation(mgardOp, {{adios2::ops::mgard::key::accuracy, accuracy_string}});
+            std::cout << "compression: mgard " << accuracy_string << std::endl;
         }
         else if(compression_dist >= 750)
         {
@@ -123,6 +125,7 @@ int main(int argc, char *argv[])
             }
             accuracy_string += "1";
             varFloats.AddOperation(szOp, {{adios2::ops::sz::key::accuracy, accuracy_string}});
+            std::cout << "compression: sz " << accuracy_string << std::endl;
         }
 
         adios2::Engine engine = io.Open("TrainingData", adios2::Mode::Write);
