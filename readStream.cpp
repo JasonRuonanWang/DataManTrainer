@@ -13,6 +13,7 @@ int main(int argc, char **argv)
 
         adios2::Params engineParams;
         engineParams["IPAddress"] = "203.230.120.125";
+        engineParams["IPAddress"] = "127.0.0.1";
         engineParams["Port"] = std::to_string(10000+i);
         engineParams["Monitor"] = "true";
         engineParams["Timeout"] = "15";
