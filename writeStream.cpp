@@ -18,15 +18,15 @@ int main(int argc, char *argv[])
     {
         size_t variable_size = variable_size_distrib(gen);
 
-        int transport_dist = bool_distrib(gen);
-        std::string transport_method;
-        if(transport_dist < 500)
+        int compression_dist = bool_distrib(gen);
+        bool compression;
+        if(compression_dist < 800)
         {
-            transport_method = "fast";
+            compression = true;
         }
         else
         {
-            transport_method = "fast";
+            compression = false;
         }
 
         int threading_dist = bool_distrib(gen);
@@ -40,7 +40,6 @@ int main(int argc, char *argv[])
             threading = "false";
         }
 
-        int compression_dist = bool_distrib(gen);
 
         int compression_accuracy = accuracy_distrib(gen);
         int float_accuracy = accuracy_distrib(gen);
@@ -72,7 +71,7 @@ int main(int argc, char *argv[])
         engineParams["IPAddress"] = "127.0.0.1";
         engineParams["Port"] = std::to_string(10000+i);
         engineParams["Monitor"] = "true";
-        engineParams["TransportMode"] = transport_method;
+        engineParams["TransportMode"] = "fast";
         engineParams["Threading"] = threading;
         engineParams["Verbose"] = "0";
         engineParams["FloatAccuracy"] = accuracy_string;
@@ -93,39 +92,9 @@ int main(int argc, char *argv[])
         io.SetParameters(engineParams);
 
         auto varFloats = io.DefineVariable<double>("myfloats", shape, start, count);
-        if(compression_dist >= 250 && compression_dist < 500)
-        {
-            adios2::Operator zfpOp = adios.DefineOperator("zfpCompressor", adios2::ops::LossyZFP);
-            std::string accuracy_string = "0.";
-            for(int i=0; i<compression_accuracy; ++i)
-            {
-                accuracy_string += "0";
-            }
-            accuracy_string += "1";
-            varFloats.AddOperation(zfpOp, {{adios2::ops::zfp::key::accuracy, accuracy_string}});
-            std::cout << "compression: zfp " << accuracy_string << std::endl;
-        }
-        else if(compression_dist >= 500 && compression_dist < 750)
-        {
-            adios2::Operator mgardOp = adios.DefineOperator("mgardCompressor", adios2::ops::LossyMGARD);
-            std::string accuracy_string = "0.";
-            for(int i=0; i<compression_accuracy; ++i)
-            {
-                accuracy_string += "0";
-            }
-            accuracy_string += "1";
-            varFloats.AddOperation(mgardOp, {{adios2::ops::mgard::key::accuracy, accuracy_string}});
-            std::cout << "compression: mgard " << accuracy_string << std::endl;
-        }
-        else if(compression_dist >= 750)
+        if(compression)
         {
             adios2::Operator szOp = adios.DefineOperator("szCompressor", adios2::ops::LossySZ);
-            std::string accuracy_string = "0.";
-            for(int i=0; i<compression_accuracy; ++i)
-            {
-                accuracy_string += "0";
-            }
-            accuracy_string += "1";
             varFloats.AddOperation(szOp, {{adios2::ops::sz::key::accuracy, accuracy_string}});
             std::cout << "compression: sz " << accuracy_string << std::endl;
         }
