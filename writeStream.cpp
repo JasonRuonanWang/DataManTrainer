@@ -75,10 +75,7 @@ int main(int argc, char *argv[])
         engineParams["Threading"] = threading;
         engineParams["Verbose"] = "0";
         engineParams["FloatAccuracy"] = accuracy_string;
-        if(combining_steps > 50)
-        {
-            engineParams["CombiningSteps"] = std::to_string(combining_steps-50);
-        }
+        engineParams["CombiningSteps"] = std::to_string(combining_steps);
 
         for(const auto &i : engineParams)
         {
