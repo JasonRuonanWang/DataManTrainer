@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
         engineParams["Monitor"] = "true";
         engineParams["TransportMode"] = "fast";
         engineParams["Threading"] = threading;
-        engineParams["Verbose"] = "0";
+        engineParams["Verbose"] = "10";
         engineParams["FloatAccuracy"] = accuracy_string;
         engineParams["CombiningSteps"] = std::to_string(combining_steps);
 
@@ -89,9 +89,10 @@ int main(int argc, char *argv[])
         io.SetParameters(engineParams);
 
         auto varFloats = io.DefineVariable<double>("myfloats", shape, start, count);
+
+        adios2::Operator szOp = adios.DefineOperator("szCompressor", adios2::ops::LossySZ);
         if(compression)
         {
-            adios2::Operator szOp = adios.DefineOperator("szCompressor", adios2::ops::LossySZ);
             varFloats.AddOperation(szOp, {{adios2::ops::sz::key::accuracy, accuracy_string}});
             std::cout << "compression: sz " << accuracy_string << std::endl;
         }

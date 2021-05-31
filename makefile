@@ -12,4 +12,4 @@ all:
 
 
 clean:
-	rm -f *.exe
+	rm -f *.exe TrainingData.*
