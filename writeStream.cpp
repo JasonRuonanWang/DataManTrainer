@@ -7,6 +7,14 @@
 
 int main(int argc, char *argv[])
 {
+
+    int port=10000;
+
+    if(argc>1)
+    {
+        port = std::stoi(argv[1]);
+    }
+
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> bool_distrib(0, 1000);
@@ -14,7 +22,7 @@ int main(int argc, char *argv[])
     std::uniform_int_distribution<> combining_steps_distrib(1, 100);
     std::uniform_int_distribution<> accuracy_distrib(0, 5);
 
-    for(int i=0; i<9999; ++i)
+    for(int i=0; i<1; ++i)
     {
         size_t variable_size = variable_size_distrib(gen);
 
@@ -68,8 +76,8 @@ int main(int argc, char *argv[])
 
         adios2::Params engineParams;
         engineParams["IPAddress"] = "203.230.120.125";
-        engineParams["IPAddress"] = "127.0.0.1";
-        engineParams["Port"] = std::to_string(10000+i);
+//        engineParams["IPAddress"] = "127.0.0.1";
+        engineParams["Port"] = std::to_string(port+i);
         engineParams["Monitor"] = "true";
         engineParams["TransportMode"] = "fast";
         engineParams["Threading"] = threading;

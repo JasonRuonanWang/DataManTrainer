@@ -6,8 +6,14 @@
 
 int main(int argc, char **argv)
 {
+    int port=10000;
 
-    for(int i=0; i<9999; ++i)
+    if(argc>1)
+    {
+        port = std::stoi(argv[1]);
+    }
+
+    for(int i=0; i<1; ++i)
     {
         std::random_device rd;
         std::mt19937 gen(rd());
@@ -28,8 +34,8 @@ int main(int argc, char **argv)
 
         adios2::Params engineParams;
         engineParams["IPAddress"] = "203.230.120.125";
-        engineParams["IPAddress"] = "127.0.0.1";
-        engineParams["Port"] = std::to_string(10000+i);
+//        engineParams["IPAddress"] = "127.0.0.1";
+        engineParams["Port"] = std::to_string(port+i);
         engineParams["Monitor"] = "true";
         engineParams["Timeout"] = "30";
         engineParams["Verbose"] = "10";
