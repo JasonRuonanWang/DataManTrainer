@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> bool_distrib(0, 1000);
-    std::uniform_int_distribution<> variable_size_distrib(10, 1500);
+    std::uniform_int_distribution<> variable_size_distrib(10, 10000);
     std::uniform_int_distribution<> combining_steps_distrib(1, 100);
     std::uniform_int_distribution<> accuracy_distrib(0, 5);
 
@@ -50,29 +50,36 @@ int main(int argc, char *argv[])
 
 
         int compression_accuracy = accuracy_distrib(gen);
-        int float_accuracy = accuracy_distrib(gen);
-        while (float_accuracy > compression_accuracy)
+        int required_accuracy = accuracy_distrib(gen);
+        while (required_accuracy > compression_accuracy)
         {
-            float_accuracy = accuracy_distrib(gen);
+            compression_accuracy = accuracy_distrib(gen);
         }
-        std::string accuracy_string = "0.";
-        for(int i=0; i<float_accuracy; ++i)
+        std::string required_accuracy_string = "0.";
+        for(int i=0; i<required_accuracy; ++i)
         {
-            accuracy_string += "0";
+            required_accuracy_string += "0";
         }
-        accuracy_string += "1";
+        required_accuracy_string += "1";
+
+        std::string compression_accuracy_string = "0.";
+        for(int i=0; i<required_accuracy; ++i)
+        {
+            compression_accuracy_string += "0";
+        }
+        compression_accuracy_string += "1";
 
         int combining_steps = combining_steps_distrib(gen);
 
-        std::vector<double> myFloats(variable_size*variable_size);
+        std::vector<double> myFloats(2*variable_size);
         for(size_t i=0; i<myFloats.size(); i++)
         {
             myFloats[i]=i;
         }
 
-        adios2::Dims shape({variable_size, variable_size});
+        adios2::Dims shape({2, variable_size});
         adios2::Dims start({0, 0});
-        adios2::Dims count({variable_size, variable_size});
+        adios2::Dims count({2, variable_size});
 
         adios2::Params engineParams;
         engineParams["IPAddress"] = "203.230.120.125";
@@ -82,7 +89,7 @@ int main(int argc, char *argv[])
         engineParams["TransportMode"] = "fast";
         engineParams["Threading"] = threading;
         engineParams["Verbose"] = "10";
-        engineParams["FloatAccuracy"] = accuracy_string;
+        engineParams["FloatAccuracy"] = required_accuracy_string;
         engineParams["CombiningSteps"] = std::to_string(combining_steps);
 
         for(const auto &i : engineParams)
@@ -101,8 +108,8 @@ int main(int argc, char *argv[])
         adios2::Operator szOp = adios.DefineOperator("szCompressor", adios2::ops::LossySZ);
         if(compression)
         {
-            varFloats.AddOperation(szOp, {{adios2::ops::sz::key::accuracy, accuracy_string}});
-            std::cout << "compression: sz " << accuracy_string << std::endl;
+            varFloats.AddOperation(szOp, {{adios2::ops::sz::key::accuracy, compression_accuracy_string}});
+            std::cout << "compression: sz " << compression_accuracy_string << std::endl;
         }
 
         adios2::Engine engine = io.Open("TrainingData", adios2::Mode::Write);

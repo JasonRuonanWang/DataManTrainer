@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 //        engineParams["IPAddress"] = "127.0.0.1";
         engineParams["Port"] = std::to_string(port+i);
         engineParams["Monitor"] = "true";
-        engineParams["Timeout"] = "30";
+        engineParams["Timeout"] = "20";
         engineParams["Verbose"] = "10";
         engineParams["Threading"] = threading;
         engineParams["MaxStepBufferSize"] = "1100000000";
