@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
         required_accuracy_string += "1";
 
         std::string compression_accuracy_string = "0.";
-        for(int i=0; i<required_accuracy; ++i)
+        for(int i=0; i<compression_accuracy; ++i)
         {
             compression_accuracy_string += "0";
         }
